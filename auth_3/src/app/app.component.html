@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-sm navbar-light bg-dark">
+  <div class="container-fluid">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarTogglerDemo03"
+      aria-controls="navbarTogglerDemo03"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon bg-info"></span>
+    </button>
+    <a class="navbar-brand text-light" routerLink="">AUTH</a>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+      <div class="col-md-8">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="!isLoggedIn">
+          <li class="nav-item">
+            <a class="nav-link text-light" routerLink="/">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-light" routerLink="/about">About</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-4 d-flex justify-content-between">
+        <div class="">
+          <button
+            type="button"
+            class="btn btn-outline-success text-light text-right"
+            *ngIf="!isLoggedIn"
+          >
+            Signin
+          </button>
+        </div>
+
+        <div class="">
+          <button
+            mat-button
+            [matMenuTriggerFor]="menu"
+            class="text-light btn btn-outline-warning text-right"
+            *ngIf="isLoggedIn"
+          >
+            <i class="fa fa-user-o user-icon" aria-hidden="true"></i>
+          </button>
+
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>My Profile</button>
+            <button mat-menu-item>Change Password</button>
+            <button mat-menu-item (click)="onLogout()">Signout</button>
+          </mat-menu>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<hr />
+<router-outlet></router-outlet>

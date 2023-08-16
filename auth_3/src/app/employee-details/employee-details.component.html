@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row">
+    <div class="">
+      <div class="card" *ngFor="let empData of singleEmpData">
+        <div class="d-flex justify-content-between">
+          <div class="img align-self-center">
+            <img
+              src="./assets/user.jpg"
+              class="img-fluid w-50 p-2"
+              alt="User"
+            />
+          </div>
+
+          <div class="card-body">
+            <h3 class="card-title text-danger">{{ empData.name }}</h3>
+            <p class="card-text">
+              <span class="text-primary fw-bold">Designation: </span
+              >{{ empData.designation }}
+            </p>
+            <p class="card-text">
+              <span class="text-primary fw-bold">Gender: </span
+              >{{ empData.gender }}
+            </p>
+            <p class="card-text">
+              <span class="text-primary fw-bold">Status: </span
+              >{{ empData.status }}
+            </p>
+            <a routerLink="/dashboard" class="bg-primary p-1 text-light"
+              >Back</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
