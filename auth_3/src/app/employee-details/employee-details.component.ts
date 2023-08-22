@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeService } from '../services/employee.service';
 
 @Component({
@@ -11,7 +11,8 @@ export class EmployeeDetailsComponent {
   singleEmpData: any[] = [];
   constructor(
     private _activatedRoute: ActivatedRoute,
-    private _empService: EmployeeService
+    private _empService: EmployeeService,
+    private router: Router
   ) {}
   ngOnInit() {
     // Uxtrendz Params and for error paste my code to chatGPT & follow its instruction
@@ -26,5 +27,9 @@ export class EmployeeDetailsComponent {
         console.log('Employee ID is missing');
       }
     });
+  }
+
+  onGoBack() {
+    this.router.navigate(['/dashboard']);
   }
 }

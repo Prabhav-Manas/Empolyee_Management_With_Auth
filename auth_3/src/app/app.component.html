@@ -21,6 +21,11 @@
           <li class="nav-item">
             <a class="nav-link text-light" routerLink="/about">About</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link text-light" routerLink="/employee-dashboard"
+              >Employee Dashboard</a
+            >
+          </li>
         </ul>
       </div>
 
@@ -42,12 +47,35 @@
             class="text-light btn btn-outline-warning text-right"
             *ngIf="isLoggedIn"
           >
-            <i class="fa fa-user-o user-icon" aria-hidden="true"></i>
+            <!-- <i class="fa fa-user-o user-icon" aria-hidden="true"></i> -->
+            <img
+              src="{{ profileInfoData.photoUrl }}"
+              class="img-fluid"
+              alt=""
+              width="40"
+              height="40"
+            />
           </button>
 
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>My Profile</button>
-            <button mat-menu-item>Change Password</button>
+            <button mat-menu-item routerLink="profile">My Profile</button>
+            <button
+              mat-menu-item
+              routerLink="profile"
+              [queryParams]="{ EditMode: true }"
+            >
+              Edit Profile
+            </button>
+            <button mat-menu-item routerLink="changePassword">
+              Change Password
+            </button>
+            <button
+              mat-menu-item
+              routerLink="changePassword"
+              routerLink="forgotPassword"
+            >
+              Forgot Password
+            </button>
             <button mat-menu-item (click)="onLogout()">Signout</button>
           </mat-menu>
         </div>

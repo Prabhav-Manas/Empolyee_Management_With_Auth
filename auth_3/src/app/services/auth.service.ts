@@ -4,12 +4,18 @@ import { AuthResponseData } from '../appInterface/auth-response.interface';
 import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
 import { User } from '../models/user.model';
 import { Router } from '@angular/router';
+import { PasswordChange } from '../models/password-change.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  userSub = new BehaviorSubject<User | null>(null);
+  user = new BehaviorSubject<User | null>(null);
+  profileInfoData = new BehaviorSubject({
+    displayName: '',
+    email: '',
+    photoUrl: '',
+  });
 
   private tokenExpirationTimer: any;
 
@@ -39,6 +45,7 @@ export class AuthService {
   }
 
   signIn(email: string, password: string) {
+    console.log('User', this.user);
     return this.http
       .post<AuthResponseData>(
         'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCCQL3QufqmFf5S2nps9CJUrN0rnwpc0Gg',
@@ -74,17 +81,18 @@ export class AuthService {
         new Date(parsedData._tokenExpirationDate)
       );
 
-      this.userSub.next(loadedUser);
+      this.user.next(loadedUser);
 
       const expirationDuration =
         new Date(parsedData._tokenExpirationDate).getTime() -
         new Date().getTime();
       this.autoSignOut(expirationDuration);
+      // this.getUserProfileData(loadedUser._token)
     }
   }
 
   signOut() {
-    this.userSub.next(null);
+    this.user.next(null);
     this.router.navigate(['']);
     localStorage.removeItem('UserData');
 
@@ -127,12 +135,80 @@ export class AuthService {
   ) {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, _token, expirationDate);
-    // console.log(user);
+    console.log(user);
 
-    this.userSub.next(user);
+    this.user.next(user);
     this.autoSignOut(expiresIn * 1000);
     localStorage.setItem('UserData', JSON.stringify(user));
 
-    // console.log(this.userSub.next(user));
+    this.getUserProfileData(_token);
+  }
+
+  updateProfile(data: any) {
+    return this.http
+      .post<any>(
+        'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCCQL3QufqmFf5S2nps9CJUrN0rnwpc0Gg',
+        {
+          idToken: data.token,
+          displayName: data.name,
+          photoUrl: data.profileImg,
+          returnSecureToken: true,
+        }
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getUserProfileData(token: any) {
+    this.http
+      .post<any>(
+        'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyCCQL3QufqmFf5S2nps9CJUrN0rnwpc0Gg',
+        {
+          idToken: token,
+        }
+      )
+      .subscribe((res) => {
+        this.profileInfoData.next({
+          displayName: res.users[0].displayName,
+          email: res.users[0].email,
+          photoUrl: res.users[0].photoUrl,
+        });
+      });
+  }
+
+  changePassword(data: PasswordChange) {
+    return this.http
+      .post<PasswordChange>(
+        'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCCQL3QufqmFf5S2nps9CJUrN0rnwpc0Gg',
+        {
+          idToken: data.idToken,
+          password: data.password,
+          returnSecureToken: true,
+        }
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  forgotPasswordResetWithEmail(data: any) {
+    return this.http
+      .post<any>(
+        'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyCCQL3QufqmFf5S2nps9CJUrN0rnwpc0Gg',
+        {
+          requestType: 'PASSWORD_RESET',
+          email: data.email,
+        }
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  googleSignin(idToken: any) {
+    // return this.http.post(
+    //   'https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=AIzaSyCCQL3QufqmFf5S2nps9CJUrN0rnwpc0Gg',
+    //   {
+    //     postBody: `id_token=${idToken}&providerId=google.com`,
+    //     requestUri: 'http://localhost:4200/',
+    //     returnIdpCredential: true,
+    //     returnSecureToken: true,
+    //   }
+    // );
   }
 }

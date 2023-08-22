@@ -47,7 +47,7 @@
           <button
             type="submit"
             class="btn btn-primary btn-sm"
-            [disabled]="!formAuth.valid"
+            [disabled]=""
             (click)="onSubmit()"
           >
             {{ isLogInMode ? "SignIn" : "SignUp" }}
@@ -60,10 +60,27 @@
         </div>
         <div class="col-md-6">
           <p class="my-2 text-right">
-            <a routerLink="" class="text-warning">Forgot Password?</a>
+            <a routerLink="/forgotPassword" class="text-warning"
+              >Forgot Password?</a
+            >
           </p>
         </div>
       </form>
+
+      <div
+        class="googleSignIn text-center bg-light d-flex m-auto justify-content-center"
+        routerLink=""
+        (click)="onGoogleSignIn()"
+      >
+        <img
+          src="./assets/google.png"
+          class="img-fluid"
+          alt="google image"
+          width="50"
+          height="40"
+        />
+        <p class="mt-2 fw-bold text-primary">Signin with Google</p>
+      </div>
     </div>
   </div>
 </div>

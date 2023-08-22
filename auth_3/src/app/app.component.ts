@@ -10,15 +10,20 @@ export class AppComponent implements OnInit {
   title = 'auth_3';
 
   isLoggedIn: boolean = false;
+  profileInfoData: any;
 
   constructor(private _authService: AuthService) {}
   ngOnInit() {
-    this._authService.userSub.subscribe((res) => {
+    this._authService.user.subscribe((res) => {
       if (res) {
         this.isLoggedIn = true;
       } else {
         this.isLoggedIn = false;
       }
+    });
+
+    this._authService.profileInfoData.subscribe((res) => {
+      this.profileInfoData = res;
     });
 
     this._authService.autoSignIn();
