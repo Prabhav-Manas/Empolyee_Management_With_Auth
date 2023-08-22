@@ -1,0 +1,86 @@
+<div class="container shadow bg-dark">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-6 m-auto">
+      <img src="./assets/authImg.png" class="img-fluid" alt="AuthImg" />
+    </div>
+    <div class="col-12 col-sm-12 col-md-6 m-5 p-5 m-auto">
+      <div class="alert alert-danger" *ngIf="error">
+        {{ error }}
+      </div>
+      <form [formGroup]="authForm" #formAuth="ngForm">
+        <div class="mb-4">
+          <label for="email" class="form-label text-warning fw-bold"
+            >Email address</label
+          >
+          <input
+            type="email"
+            class="form-control relative"
+            id="email"
+            formControlName="email"
+            [ngClass]="{'is-invalid':authForm.controls?.['email']?.invalid && authForm.controls?.['email']?.touched}"
+          />
+          <small
+            *ngIf="authForm.controls?.['email']?.errors?.['required']"
+            class="invalid-feedback text-danger absolute"
+            >Email is required</small
+          >
+        </div>
+        <div class="mb-4">
+          <label for="password" class="form-label text-warning fw-bold"
+            >Password</label
+          >
+          <input
+            type="password"
+            class="form-control relative"
+            id="password"
+            formControlName="password"
+            [ngClass]="authForm.controls?.['password']?.invalid && authForm.controls?.['password']?.touched"
+          />
+          <small
+            *ngIf="authForm.controls?.['password']?.errors?.['requird']"
+            class="invalid-feedback text-danger absolute"
+            >Password is required</small
+          >
+        </div>
+
+        <div class="d-md-flex d-sm-block justify-content-between">
+          <button
+            type="submit"
+            class="btn btn-primary btn-sm"
+            [disabled]=""
+            (click)="onSubmit()"
+          >
+            {{ isLogInMode ? "SignIn" : "SignUp" }}
+          </button>
+          <p class="mt-2 ml-2">
+            <a routerLink="" class="text-warning" (click)="onSwitchMode()">{{
+              isLogInMode ? "Dont have account? Create one" : "SignIn"
+            }}</a>
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p class="my-2 text-right">
+            <a routerLink="/forgotPassword" class="text-warning"
+              >Forgot Password?</a
+            >
+          </p>
+        </div>
+      </form>
+
+      <div
+        class="googleSignIn text-center bg-light d-flex m-auto justify-content-center"
+        routerLink=""
+        (click)="onGoogleSignIn()"
+      >
+        <img
+          src="./assets/google.png"
+          class="img-fluid"
+          alt="google image"
+          width="50"
+          height="40"
+        />
+        <p class="mt-2 fw-bold text-primary">Signin with Google</p>
+      </div>
+    </div>
+  </div>
+</div>

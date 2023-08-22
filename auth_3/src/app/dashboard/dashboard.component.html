@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-12" *ngIf="isLoggedIn">
+      <h2>Dashboard</h2>
+      <button
+        type="button"
+        class="btn btn-primary"
+        routerLink=""
+        (click)="onEmployeeDashboard()"
+      >
+        Go to Employee Dashboard
+      </button>
+    </div>
+  </div>
+</div>
